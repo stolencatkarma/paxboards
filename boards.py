@@ -5,7 +5,7 @@ from server.conf import settings
 from django.utils import timezone
 
 
-class DefaultBoard(TypeclassBase, BoardDB):
+class DefaultBoard(BoardDB, metaclass=TypeclassBase):
 
     objects = BoardManager()
 
