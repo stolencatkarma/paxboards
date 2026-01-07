@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 
 from django.db import models
 from django.db.models import Q

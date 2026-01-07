@@ -1,12 +1,11 @@
 from evennia.typeclasses.models import TypeclassBase
-from paxboards.models import Post, BoardDB
-from paxboards.managers import BoardManager
-from future.utils import with_metaclass
+from .models import Post, BoardDB
+from .managers import BoardManager
 from server.conf import settings
 from django.utils import timezone
 
 
-class DefaultBoard(with_metaclass(TypeclassBase, BoardDB)):
+class DefaultBoard(TypeclassBase, BoardDB):
 
     objects = BoardManager()
 

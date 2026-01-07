@@ -1,9 +1,7 @@
-from __future__ import unicode_literals
-
 from django.db import models
 from evennia.typeclasses.models import TypedObject
 from evennia.utils.idmapper.models import SharedMemoryModel
-from managers import PostManager
+from .managers import PostManager
 
 __all__ = ("Post", "BoardDB")
 
@@ -40,7 +38,7 @@ class Post(SharedMemoryModel):
                                            auto_now_add=True, db_index=True, help_text='Date post was made.')
     db_pinned = models.BooleanField(verbose_name="pinned",
                                     help_text='Should the post remain visible even after expiration?')
-    db_readers = models.ManyToManyField("accounts.AccountDB", related_name="read_posts", null=True, blank=True,
+    db_readers = models.ManyToManyField("accounts.AccountDB", related_name="read_posts", blank=True,
                                         verbose_name="readers", help_text='Players who have read this post.')
     db_parent = models.ForeignKey('Post', verbose_name='parent', related_name='replies', null=True, blank=True,
                                   help_text='Parent/child map for threaded replies.')
@@ -56,9 +54,6 @@ class Post(SharedMemoryModel):
     def __str__(self):
         return "<Post " + str(self.id) + " by " + self.db_poster_name + ": " + self.db_subject + \
         ("(unread)>" if self.is_unread else "(none)>" if not hasattr(self,"unread") else ">")
-
-    def __unicode__(self):
-        return unicode(str(self))
 
     def __repr__(self):
         return str(self)
@@ -174,9 +169,9 @@ class Post(SharedMemoryModel):
         else:
             postid = self.db_board.name
 
-        datestring = unicode(str(self.db_date_created.year)) + u'/'
-        datestring += unicode(str(self.db_date_created.month)).rjust(2, '0') + u'/'
-        datestring += unicode(str(self.db_date_created.day)).rjust(2, '0')
+        datestring = str(self.db_date_created.year) + '/'
+        datestring += str(self.db_date_created.month).rjust(2, '0') + '/'
+        datestring += str(self.db_date_created.day).rjust(2, '0')
 
         header = ("===[ " + postid + " ]").ljust(75, "=")
 
@@ -192,9 +187,9 @@ class Post(SharedMemoryModel):
         if show_replies:
             replies = Post.objects.filter(db_parent=self).order_by('db_date_created')
             for r in replies:
-                datestring = unicode(str(r.db_date_created.year)) + u'/'
-                datestring += unicode(str(r.db_date_created.month)).rjust(2, '0') + u'/'
-                datestring += unicode(str(r.db_date_created.day)).rjust(2, '0')
+                datestring = str(r.db_date_created.year) + '/'
+                datestring += str(r.db_date_created.month).rjust(2, '0') + '/'
+                datestring += str(r.db_date_created.day).rjust(2, '0')
                 post_string += "\n---------------------------------------------------------------------------\n"
                 post_string += "|555Date   :|n " + datestring + "\n"
                 post_string += "|555Poster :|n " + r.db_poster_name + "\n"
