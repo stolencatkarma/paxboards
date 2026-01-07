@@ -378,6 +378,8 @@ class BoardCmd(default_cmds.MuxCommand):
                 return
 
             result = self.resolve_id(self.lhs)
+            if not result:
+                return
             board = result["board"]
             if not board:
                 self.msg("Unable to find a board matching '" + self.lhs+ "'!")
